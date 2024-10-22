@@ -2,6 +2,8 @@
 #include <Porcentaje.hpp>
 #include <list>
 
+using namespace std;
+
 int main (){
     std::list<Porcentaje> focos;
 
@@ -17,7 +19,6 @@ int main (){
     {
         f.Incrementar(10);
     }
-    
 
     foco1.Incrementar(10);
     foco1.Incrementar(10);
