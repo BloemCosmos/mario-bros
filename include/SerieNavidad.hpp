@@ -3,7 +3,6 @@
 #include <list>
 using namespace std;
 
-
 class SerieNavidad
 {
 private:
@@ -21,6 +20,7 @@ public:
     ~SerieNavidad() {}
     void Encender()
     {
+        system("color 84");
         for (auto &&f : focos)
         {
             f.Encender();
