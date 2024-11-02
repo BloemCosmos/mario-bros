@@ -47,9 +47,10 @@ public:
         if (this->encendido)
         {
             return '*';
-        }else{
+        }
+        else
+        {
             return 'o';
         }
-        
     }
 };

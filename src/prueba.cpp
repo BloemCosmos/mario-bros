@@ -4,46 +4,52 @@
 #include <ftxui/screen/terminal.hpp>
 #include <iostream>
 #include <thread>
+#include <cmath>
 
 using namespace std;
 using namespace ftxui;
 
-int posicionX(int posicion, int velocidad, int tiempo)
-{
-    return posicion + velocidad + tiempo;
-}
-
-int posicionY(int posicion, int velocidad, int tiempo)
-{
-    return 0.5 + (9.81) + (tiempo + tiempo);
-}
-
 int main(int argc, char const *argv[])
 {
     std::string reset_position;
-    int frame = 0;
-    int vix = 1;
-    int viy = 1;
-    int posx = 0;
-    int posy = 0;
-
-    auto can = Canvas(200, 200);
-    auto ColorSupport = vbox({});
+    int frame = 1;
+    float velocidadX = 2.0f;
+    float velocidadY = 0.0f;
+    float gravedad = 0.5f;
+    float posX = 50.0f;
+    float posY = 10.0f;
+    int radio = 3;
+    int altura_suelo = 98;
 
     while (true)
     {
         Screen pantalla = Screen::Create(Dimension::Full(), Dimension::Full());
-        can.DrawPointCircle(
-            posicionX(posx, vix, frame),
-            posicionY(posy, viy, frame),
-            2);
+        auto can = Canvas(100, 100);
 
-        Element lienzo = bgcolor(Color::Orange1, border(vbox(ColorSupport, canvas(&can))));
+        posX += velocidadX;
+        posY += velocidadY;
+
+        velocidadY += gravedad;
+
+        if (posX <= 0 || posX + radio >= 100)
+        {
+            velocidadX = -velocidadX;
+        }
+        if (posY + radio >= altura_suelo)
+        {
+            posY = altura_suelo - radio;
+            velocidadY = -velocidadY * 0.9f;
+        }
+
+        can.DrawPointCircle(posX, posY, radio);
+
+        Element lienzo = bgcolor(Color::Orange1, border(canvas(&can)));
         Render(pantalla, lienzo);
         std::cout << reset_position;
         pantalla.Print();
         reset_position = pantalla.ResetPosition(true);
-        this_thread::sleep_for(0.1s);
+
+        this_thread::sleep_for(0.02s);
         frame++;
     }
 
